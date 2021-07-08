@@ -1,131 +1,71 @@
-var timeContainer = document.querySelector(".time-container");
-var timeBtnContainer = document.querySelector(".time-button");
-var tableContainer = document.querySelector(".table");
-var inputBox = document.querySelector(".input-box");
-var currentDate = document.querySelector("#currentDay");
-var currentTime = moment().format("LT")
-var currentHour = moment().format("h");
-
-console.log(currentHour);
-
-var timeSlots = [
-   "7",
-   "8",
-   "9",
-   "10",
-   "11",
-   "12",
-   "13",
-   "14",
-   "15",
-   "16",
-   "17",
-   "18",
-   "19",
-   
-    
-];
-
-var timeSlotLength = timeSlots.length
-   
-currentDate.textContent = moment().format("MMMM Do YYYY, h:mm:ss a");
-
-function addTime() {
+$(document).ready(function () {
+    // listen for save button clicks html id 
+    $('.saveBtn').on('click', function () {
+      // get nearby values
+      var value = $(this).siblings('.description').val();
+      var time = $(this).parent().attr('id');
   
-    timeSlots.forEach(function (timeSlot) {
-        var timeListContainer = document.createElement("div");
-        var inputContainer = document.createElement("div")
-        var timeList = document.createElement("tr");
-        var input = document.createElement("input");
-        var time = document.createElement("td");
-        var timeButton = document.createElement("button");
-    
-        if (timeSlot >= 7) {
-            time.textContent = timeSlot + "am";
+      // save Sets the value of the pair identified by key to value, 
+    //   creating a new key/value pair if none existed for key previously.
+// Throws a "QuotaExceededError" DOMException exception if the new value couldn't be set. 
+// (Setting could fail if, e.g., the user has disabled storage for the site, 
+// or if the quota has been exceeded.) 
+      localStorage.setItem(time, value);
+  
+      // Show prompt that item was saved to localStorage by adding class 'show'
+      $('.prompt').addClass('show');
+  
+      // Timeout to remove 'show' class after 3 seconds
+      setTimeout(function () {
+        $('.prompt').removeClass('show');
+      }, 3000);
+    });
+
+     // display current day and time on page
+     $('#currentDay').text(moment().format('MMMM Do YYYY, h:mm:ss a'));
+  
+    function hourUpdater() {
+      // get current number of hours
+      var currentBlock = moment().hours();
+  
+      // loop over time field blocks that splits once the string into the string array resulting in 
+      $('.time-block').each(function () {
+        var hourBlock = parseInt($(this).attr('id').split('-')[1]);
+  
+        // check if moved pastBlock at this time triggring color update
+        if (hourBlock < currentBlock) {
+          $(this).addClass('pastBlock');
+        } else if (hourBlock === currentBlock) {
+          $(this).removeClass('pastBlock');
+          $(this).addClass('present');
         } else {
-            time.textContent = timeSlot + "pm";
+          $(this).removeClass('pastBlock');
+          $(this).removeClass('present');
+          $(this).addClass('future');
         }
-
-        
-
-        timeButton.textContent = "Save";
-        timeBtnContainer.appendChild(timeButton);
-        timeList.appendChild(time);
-        timeList.appendChild(inputContainer);
-        timeList.appendChild(timeButton);
-
-        inputContainer.appendChild(input);
-        timeListContainer.appendChild(timeList);
-        timeContainer.appendChild(timeListContainer);
-        tableContainer.appendChild(timeContainer);
-        time.setAttribute("class", "time");
-        timeList.setAttribute("class", "time-list");
-        timeButton.setAttribute("class", "saveBtn");
-        timeButton.setAttribute("data-time", timeSlot);
-        inputContainer.setAttribute("class", "input-container");
-        input.setAttribute("class", "input-box");
-        input.setAttribute("id", timeSlot);
-        input.setAttribute("type", "text");
-        timeButton.addEventListener("click", saveData);
-
-    });
-};
-
-addTime();
-
-function timeDay() {
-   var time = moment().hours()
-    $(".input-box").each(function () {
-
-        var curTime = $(this).attr("id");
-
-        if (curTime === time) {
-            $(this).addClass("present")
-
-        } else if (curTime < time) {
-            $(this).addClass("past")
-
-        } else {
-            $(this).addClass("future")
-        
-            console.log(curTime)
-        }
-    });
-}
-timeDay();
-
-function getData() {
-
-    $(".input-box").each(function () {
-        var time = $(this).attr("data-time");
-        var timeID = $("#" + time);
-
-        localStorage.getItem(time, timeID.val());
-    });
-
-$("#5").val(localStorage.getItem("5"));
-$("#6").val(localStorage.getItem("6"));
-$("#7").val(localStorage.getItem("7"));
-$("#8").val(localStorage.getItem("8"));
-$("#9").val(localStorage.getItem("9"));
-$("#10").val(localStorage.getItem("10"));
-$("#11").val(localStorage.getItem("11"));
-$("#12").val(localStorage.getItem("12"));
-$("#1").val(localStorage.getItem("1"));
-$("#2").val(localStorage.getItem("2"));
-$("#3").val(localStorage.getItem("3"));
-$("#4").val(localStorage.getItem("4"));
-$("#5").val(localStorage.getItem("5"));
-$("#6").val(localStorage.getItem("6"));
-
-
-}
-getData();
-    
-function saveData() {
-    var time = $(this).attr("data-time");
-    var timeID = $("#" + time)
-    
-    localStorage.setItem(time, timeID.val());
-
-}
+      });
+    }
+  
+    hourUpdater();
+  
+    // set up interval to check if current time needs to be updated
+    var interval = setInterval(hourUpdater, 15000);
+  
+    // load any saved data from localStorage
+    $('#hour8 .description').val(localStorage.getItem('hour8'));
+    $('#hour9 .description').val(localStorage.getItem('hour9'));
+    $('#hour10 .description').val(localStorage.getItem('hour10'));
+    $('#hour11 .description').val(localStorage.getItem('hour11'));
+    $('#hour12 .description').val(localStorage.getItem('hour12'));
+    $('#hour13 .description').val(localStorage.getItem('hour13'));
+    $('#hour14 .description').val(localStorage.getItem('hour14'));
+    $('#hour15 .description').val(localStorage.getItem('hour15'));
+    $('#hour16 .description').val(localStorage.getItem('hour16'));
+    $('#hour17 .description').val(localStorage.getItem('hour17'));
+    $('#hour18 .description').val(localStorage.getItem('hour18'));
+    $('#hour19 .description').val(localStorage.getItem('hour19'));
+    $('#hour20 .description').val(localStorage.getItem('hour20'));
+   
+  
+  });
+  
