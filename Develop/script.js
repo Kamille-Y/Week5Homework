@@ -11,24 +11,26 @@ $(document).ready(function () {
       // save Sets the value of the pair identified by key to value, 
     //   creating a new key/value pair if none existed for key previously.
       localStorage.setItem(time, value);
+      // add a hide to my prompt make show equal to something 
   
       // Show prompt that item was saved to localStorage by adding class 'show'
       $('.prompt').addClass('show');
   
-      // // Timeout to remove 'show' class after 3 seconds
-      // setTimeout(function () {
-      //   $('.prompt').removeClass('show');
-      // }, 3000);
+      // Timeout to remove 'show' class after 3 seconds
+      setTimeout(function () {
+        $('.prompt').removeClass('show');
+      }, 3000);
     });
   
-    function hourUpdater() {
+    function blockUpdate() {
       // get current number of hours
       var currentBlock = moment().hours();
   
       // loop over time field blocks that splits once the string into the string array resulting in 
       $('.time-block').each(function () {
-        var hourBlock = parseInt($(this).attr('id').split('hours')[1]);
-  
+        var hourBlock = parseInt($(this).attr('id').split('_')[1]);
+        console.log (currentBlock)
+        console.log (hourBlock)
         // check if moved pastBlock at this time triggring color update
         if (hourBlock < currentBlock) {
           $(this).addClass('pastBlock');
@@ -48,7 +50,7 @@ $(document).ready(function () {
   
   
     // set up interval to check if current time needs to be updated
-   setInterval(hourUpdater, 1000);
+   setInterval(blockUpdate, 1000);
   
     // load any saved data from localStorage
     $('#hour8 .description').val(localStorage.getItem('hour8'));
@@ -66,7 +68,7 @@ $(document).ready(function () {
     $('#hour20 .description').val(localStorage.getItem('hour20'));
 
 
-    hourUpdater()
+    blockUpdate()
    
   
   });
